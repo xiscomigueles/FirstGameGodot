@@ -1,0 +1,73 @@
+[gd_scene load_steps=11 format=3 uid="uid://bwpem0606vfxf"]
+
+[ext_resource type="Script" path="res://game.gd" id="1_j1tdg"]
+[ext_resource type="PackedScene" uid="uid://bmc7qyhil0xbk" path="res://PruebaPrincipal.tscn" id="1_vpkws"]
+[ext_resource type="PackedScene" uid="uid://cghlwkgpsuvsc" path="res://enemigos.tscn" id="2_e2mwd"]
+[ext_resource type="PackedScene" uid="uid://dp2hhyf33045p" path="res://menu_interfaz.tscn" id="4_0a5go"]
+[ext_resource type="Texture2D" uid="uid://cd8trmchituwn" path="res://Sprites/Devil-may-cry.png" id="4_tv4qh"]
+[ext_resource type="Texture2D" uid="uid://b4tnop21mwnhi" path="res://Sprites/fondo2.jpg" id="5_rjcaf"]
+[ext_resource type="AudioStream" uid="uid://duap0wuuhve4h" path="res://Sounds/voy-a-hacerte-picadillo.mp3" id="6_hmsf0"]
+[ext_resource type="AudioStream" uid="uid://byww8bo7amj3t" path="res://Sounds/ack.mp3" id="7_budeo"]
+[ext_resource type="AudioStream" uid="uid://cly304pga31ge" path="res://Sounds/deviltrig.mp3" id="8_y7l8q"]
+
+[sub_resource type="Curve2D" id="Curve2D_nnb6p"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -2, -5, 0, 0, 0, 0, 638, 1, 0, 0, 0, 0, 640, 954, 0, 0, 0, 0, -2, 952, 0, 0, 0, 0, -2, -5)
+}
+point_count = 5
+
+[node name="Game" type="Node"]
+script = ExtResource("1_j1tdg")
+Enemigo = ExtResource("2_e2mwd")
+
+[node name="Background" type="TextureRect" parent="."]
+offset_right = 645.0
+offset_bottom = 955.0
+texture = ExtResource("5_rjcaf")
+expand_mode = 1
+
+[node name="Name" type="TextureRect" parent="."]
+offset_left = 17.0
+offset_top = 83.0
+offset_right = 602.0
+offset_bottom = 272.0
+texture = ExtResource("4_tv4qh")
+expand_mode = 1
+
+[node name="Player" parent="." instance=ExtResource("1_vpkws")]
+
+[node name="ScoreTimer" type="Timer" parent="."]
+
+[node name="StartTimerGame" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="EnemiesTimer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(320, 480)
+
+[node name="Camino" type="Path2D" parent="."]
+curve = SubResource("Curve2D_nnb6p")
+
+[node name="EnemigoPosition" type="PathFollow2D" parent="Camino"]
+position = Vector2(-2, -5)
+rotation = 0.00937473
+
+[node name="MenuInterfaz" parent="." instance=ExtResource("4_0a5go")]
+
+[node name="AudioMuerte" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_hmsf0")
+
+[node name="AudioGameOver" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_budeo")
+
+[node name="Musica" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_y7l8q")
+
+[connection signal="beat" from="Player" to="." method="_on_player_beat_game_over"]
+[connection signal="timeout" from="ScoreTimer" to="." method="_on_score_timer_timeout"]
+[connection signal="timeout" from="StartTimerGame" to="." method="_on_start_timer_game_timeout"]
+[connection signal="timeout" from="EnemiesTimer" to="." method="_on_enemies_timer_timeout"]
+[connection signal="start_game" from="MenuInterfaz" to="." method="new_game"]

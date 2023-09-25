@@ -1,0 +1,58 @@
+[gd_scene load_steps=8 format=3 uid="uid://bmc7qyhil0xbk"]
+
+[ext_resource type="Texture2D" uid="uid://dyn4o150t66p2" path="res://Sprites/Alien sprites/alienBeige.png" id="1_piv34"]
+[ext_resource type="Script" path="res://Player.gd" id="1_sdm2a"]
+[ext_resource type="Texture2D" uid="uid://dk1m5q7irqjia" path="res://Sprites/Alien sprites/alienBeige_swim2.png" id="2_l2xku"]
+[ext_resource type="Texture2D" uid="uid://d2g333t2fuyic" path="res://Sprites/Alien sprites/alienBeige_climb1.png" id="3_u6210"]
+[ext_resource type="Texture2D" uid="uid://dtcsng5sr5r6i" path="res://Sprites/Alien sprites/alienBeige_climb2.png" id="4_7b1r0"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4pdcf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_piv34")
+}],
+"loop": true,
+"name": &"DeFrente",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_l2xku")
+}],
+"loop": true,
+"name": &"Horizontal",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_u6210")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_7b1r0")
+}],
+"loop": true,
+"name": &"Vertical",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p481d"]
+radius = 27.0
+height = 90.0
+
+[node name="Player" type="Area2D"]
+position = Vector2(306, 394)
+script = ExtResource("1_sdm2a")
+Speed = 300
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_4pdcf")
+animation = &"DeFrente"
+autoplay = "Vertical"
+frame_progress = 0.502019
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_p481d")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
