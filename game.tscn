@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bwpem0606vfxf"]
+[gd_scene load_steps=12 format=3 uid="uid://bwpem0606vfxf"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_j1tdg"]
 [ext_resource type="PackedScene" uid="uid://bmc7qyhil0xbk" path="res://PruebaPrincipal.tscn" id="1_vpkws"]
@@ -9,6 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://duap0wuuhve4h" path="res://Sounds/voy-a-hacerte-picadillo.mp3" id="6_hmsf0"]
 [ext_resource type="AudioStream" uid="uid://byww8bo7amj3t" path="res://Sounds/ack.mp3" id="7_budeo"]
 [ext_resource type="AudioStream" uid="uid://cly304pga31ge" path="res://Sounds/deviltrig.mp3" id="8_y7l8q"]
+[ext_resource type="AudioStream" uid="uid://cqd8eddvqpgr2" path="res://Sounds/Cerebro cerebro cerebro - Resident Evil Efecto de Sonido(2).mp3" id="10_4nqp6"]
 
 [sub_resource type="Curve2D" id="Curve2D_nnb6p"]
 _data = {
@@ -66,8 +67,15 @@ stream = ExtResource("7_budeo")
 [node name="Musica" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("8_y7l8q")
 
+[node name="Cerebro" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_4nqp6")
+
+[node name="TimerCerebro" type="Timer" parent="."]
+wait_time = 3.0
+
 [connection signal="beat" from="Player" to="." method="_on_player_beat_game_over"]
 [connection signal="timeout" from="ScoreTimer" to="." method="_on_score_timer_timeout"]
 [connection signal="timeout" from="StartTimerGame" to="." method="_on_start_timer_game_timeout"]
 [connection signal="timeout" from="EnemiesTimer" to="." method="_on_enemies_timer_timeout"]
 [connection signal="start_game" from="MenuInterfaz" to="." method="new_game"]
+[connection signal="timeout" from="TimerCerebro" to="." method="_on_timer_cerebro_timeout"]

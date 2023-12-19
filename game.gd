@@ -3,7 +3,8 @@ extends Node
 @export var Enemigo : PackedScene
 var Score
 
-
+var audio_stream_player_Cerebro
+var timerCerebro 
 
 
 func _ready():
@@ -20,14 +21,20 @@ func new_game():
 	$AudioMuerte.play()
 	$Musica.play()
 	$Name.visible = false
+	
+	audio_stream_player_Cerebro = $Cerebro
+	timerCerebro = $TimerCerebro
+	timerCerebro.start()
 
 
 func _on_player_beat_game_over():
+	timerCerebro = $TimerCerebro
 	$ScoreTimer.stop()
 	$EnemiesTimer.stop()
 	$MenuInterfaz.game_over()
 	$Name.visible = true
 	$Musica.stop()
+	timerCerebro.stop()
 	$AudioGameOver.play()
 
 
@@ -54,9 +61,6 @@ func _on_enemies_timer_timeout():
 	e.rotation = direccion
 	e.set_linear_velocity(Vector2(randf_range(e.Min_Speed, e.Max_Speed), 0).rotated(direccion))
 	
-	
-	
-	
-	
-	
-	
+
+func _on_timer_cerebro_timeout():
+	audio_stream_player_Cerebro.play()
